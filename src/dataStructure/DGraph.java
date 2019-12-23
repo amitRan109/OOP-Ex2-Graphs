@@ -1,73 +1,90 @@
 package dataStructure;
 
 import java.util.Collection;
+import java.util.HashMap;
+
 
 public class DGraph implements graph{
+	// **params**
+	HashMap <Integer,node_data> gmap; 
+	int counter;
+	
+	public DGraph () {
+		gmap= new HashMap <> ();
+	}
+	//**functions**
+	public String toString () {
+		String ans="";
+		for (node_data node : gmap.values()) {
+			ans+=((DNode)node).toString()+",";
+		}
+		return ans;
+	}
+	
+	
 
 	@Override
 	public node_data getNode(int key) {
-		// TODO Auto-generated method stub
-		return null;
+		return gmap.get(key);
 	}
 
 	@Override
 	public edge_data getEdge(int src, int dest) {
-		// TODO Auto-generated method stub
-		return null;
+		return ((DNode)gmap.get(src)).getEdge(dest);
 	}
 
 	@Override
 	public void addNode(node_data n) {
-		// TODO Auto-generated method stub
-		
+		counter++;
+		gmap.put(n.getKey(),n);
 	}
 
 	@Override
 	public void connect(int src, int dest, double w) {
-		// TODO Auto-generated method stub
-		
+		counter++;
+		DEdge edge= new DEdge (src,dest,w);
+		((DNode)gmap.get(src)).add(dest, edge);
 	}
 
 	@Override
 	public Collection<node_data> getV() {
-		// TODO Auto-generated method stub
-		return null;
+		return gmap.values();
 	}
 
 	@Override
 	public Collection<edge_data> getE(int node_id) {
-		// TODO Auto-generated method stub
-		return null;
+		return ((DNode)gmap.get(node_id)).getE();
 	}
 
 	@Override
 	public node_data removeNode(int key) {
-		// TODO Auto-generated method stub
-		return null;
+		counter++;
+		return gmap.remove(key);
 	}
 
 	@Override
 	public edge_data removeEdge(int src, int dest) {
-		// TODO Auto-generated method stub
-		return null;
+		counter++;
+		return ((DNode)gmap.get(src)).removeEdge(dest);
 	}
 
 	@Override
 	public int nodeSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return gmap.size();
 	}
 
 	@Override
 	public int edgeSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		int counter=0;
+		for (node_data node : gmap.values()) {
+			counter+=((DNode)node).getSize();
+		}
+		return counter;
 	}
 
 	@Override
 	public int getMC() {
-		// TODO Auto-generated method stub
-		return 0;
+		return counter;
 	}
 
 }
