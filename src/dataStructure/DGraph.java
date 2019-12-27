@@ -1,10 +1,11 @@
 package dataStructure;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 
 
-public class DGraph implements graph{
+public class DGraph implements graph,Serializable{
 	// **params**
 	HashMap <Integer,node_data> gmap; 
 	int counter;
@@ -16,7 +17,11 @@ public class DGraph implements graph{
 	public String toString () {
 		String ans="";
 		for (node_data node : gmap.values()) {
-			ans+=((DNode)node).toString()+",";
+			ans+=((DNode)node).toString()+": ";
+			for (edge_data edge : ((DNode)node).getE()) {
+			ans+=((DEdge)edge).toString();
+		}
+		ans+=",";
 		}
 		return ans;
 	}

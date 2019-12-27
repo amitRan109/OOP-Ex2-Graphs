@@ -1,8 +1,13 @@
 package algorithms;
 
+import java.util.LinkedList;
+
+import java.util.List;
+
 import dataStructure.DEdge;
 import dataStructure.DGraph;
 import dataStructure.DNode;
+import dataStructure.node_data;
 
 public class algoTest {
 
@@ -47,12 +52,26 @@ public class algoTest {
 		n5.add(e8.getDest(), e8);
 		n5.add(e9.getDest(), e9);
 		n6.add(e10.getDest(), e10);
-		System.out.println("g3: "+g.toString());
+		System.out.println("g: "+g.toString());
 		Graph_Algo ga=new Graph_Algo();
 		ga.init(g);
+		ga.save("hi");
+		Graph_Algo gt=new Graph_Algo();
+		gt.init("hi");
+		
 		//System.out.println(ga.isConnected());
-		//System.out.println(ga.toString());
-		System.out.println(ga.shortestPathDist(n1.getKey(), n4.getKey()));
+		List<node_data> s=new LinkedList <node_data>();
+		//s=ga.shortestPath(n1.getKey(), n6.getKey());
+		//System.out.println(ga.shortestPathDist(n4.getKey(), n6.getKey()));
+		//System.out.println(s);
+		List<node_data> check=new LinkedList <node_data>();
+		List<Integer> targets=new LinkedList <Integer>();
+		targets.add(1);
+		targets.add(4);
+		targets.add(7);
+		targets.add(5);
+		check=ga.TSP(targets);
+		System.out.println(check);
 	}
 
 }

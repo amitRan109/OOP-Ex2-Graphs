@@ -1,11 +1,12 @@
 package dataStructure;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 
 import utils.Point3D;
 
-public class DNode implements node_data {
+public class DNode implements node_data,Serializable {
 	//**params**
 	private int key; //name
 	private String info; //md
@@ -58,11 +59,8 @@ public class DNode implements node_data {
 	}
 	
 	public String toString () {
-		String ans=key+":";
-		for (edge_data edge : map.values()) {
-			ans+=((DEdge)edge).toString();
-		}
-		return ans;
+	return ""+this.key;
+		
 	}
 	
 	//***getters & setters
