@@ -7,6 +7,6 @@ The project represent 3 main classes:
 
 data_structor: The class contains classes named DNode, DEdge, DGraph that create nodes, edges and graph that contains them.
 
-algorithms: The class contains graph (created in data_structor) and make algorithms actions on it.
+algorithms: The class contains class named graph_algo that contain graph (created in data_structor) and make algorithms actions on it.
 
 gui: The class can show graph and algorithms actions on it.
