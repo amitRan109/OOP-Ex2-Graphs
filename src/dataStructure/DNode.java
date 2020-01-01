@@ -6,25 +6,37 @@ import java.util.HashMap;
 
 import utils.Point3D;
 
-public class DNode implements node_data,Serializable {
+public class DNode implements node_data, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	//**params**
-	private int key; //name
-	private String info; //md
+	
+	private int key;
+	private String info;
 	private Point3D location;
-	private double weight; //kivun
-	private int tag; //if used
-	HashMap <Integer,edge_data> map;
-	int mark ;
+	private double weight; 
+	private int tag;
+	HashMap <Integer,edge_data> map; 
 	
 	//**constructor**
-	public DNode (int key, String info, Point3D location, double weight, int tag,int mark) {
+	public DNode () {
+		this.key=-1; ///???
+		this.info=null; 
+		this.location=null;
+		this.weight=Double.MAX_VALUE; 
+		this.tag=0; 
+		map= new HashMap <>();
+	}
+	public DNode (int key, String info, Point3D location) {
 		this.key=key; 
 		this.info=info; 
 		this.location=location;
-		this.weight=weight; 
-		this.tag=tag; 
+		this.weight=Double.MAX_VALUE; 
+		this.tag=0; 
 		map= new HashMap <>();
-		this.mark=mark;
 	}
 	
 	public DNode (int k) {
@@ -34,7 +46,6 @@ public class DNode implements node_data,Serializable {
 		this.weight=Double.MAX_VALUE;
 		this.tag=0;
 		map= new HashMap <>();
-		this.mark=-1;
 	}
 	
 	//**map functions**
@@ -54,16 +65,11 @@ public class DNode implements node_data,Serializable {
 		return map.size();
 	}
 	
-	public Collection<edge_data> getE(){
+	public Collection <edge_data> getE() {
 		return map.values();
 	}
 	
-	public String toString () {
-	return ""+this.key;
-		
-	}
-	
-	//***getters & setters
+	//**getters & setters**
 	@Override
 	public int getKey() {
 		return this.key;
@@ -108,17 +114,6 @@ public class DNode implements node_data,Serializable {
 	@Override
 	public void setTag(int t) {
 		this.tag=t;
-		
 	}
 	
-	public void setMark(int m) {
-		this.mark=m;
-		
-	}
-	
-	public int getMark() {
-		return this.mark;
-		
-	}
-
 }

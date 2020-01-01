@@ -2,7 +2,14 @@ package dataStructure;
 
 import java.io.Serializable;
 
-public class DEdge implements edge_data, Serializable {
+public class DEdge implements edge_data,Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	//**params**
+	
 	private int src;
 	private int dest;
 	private double weight;
@@ -27,12 +34,12 @@ public class DEdge implements edge_data, Serializable {
 		this.tag=0;
 	}
 	
-	public DEdge (int src, int dest, double weight, String info, int tag) {
+	public DEdge (int src, int dest, double weight, String info) {
 		this.src=src;
 		this.dest=dest;
 		this.weight=weight;
 		this.info=info;
-		this.tag=tag;
+		this.tag=0;
 	}
 	
 	//**functions**

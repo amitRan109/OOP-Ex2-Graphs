@@ -3,9 +3,15 @@ package dataStructure;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Stack;
 
 
 public class DGraph implements graph,Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	// **params**
 	HashMap <Integer,node_data> gmap; 
 	int counter;
@@ -13,28 +19,18 @@ public class DGraph implements graph,Serializable{
 	public DGraph () {
 		gmap= new HashMap <> ();
 	}
-	//**functions**
-	public String toString () {
-		String ans="";
-		for (node_data node : gmap.values()) {
-			ans+=((DNode)node).toString()+": ";
-			for (edge_data edge : ((DNode)node).getE()) {
-			ans+=((DEdge)edge).toString();
-		}
-		ans+=",";
-		}
-		return ans;
-	}
 	
-	
+	//**getters & setters**
 
 	@Override
 	public node_data getNode(int key) {
+		//if ( gmap.get(key)==nu)
 		return gmap.get(key);
 	}
 
 	@Override
 	public edge_data getEdge(int src, int dest) {
+		if (getNode(src) == null || getNode(dest) == null) return null;
 		return ((DNode)gmap.get(src)).getEdge(dest);
 	}
 
@@ -52,18 +48,30 @@ public class DGraph implements graph,Serializable{
 	}
 
 	@Override
-	public Collection<node_data> getV() {
+	public Collection <node_data> getV() {
 		return gmap.values();
 	}
 
 	@Override
-	public Collection<edge_data> getE(int node_id) {
+	public Collection <edge_data> getE(int node_id) {
 		return ((DNode)gmap.get(node_id)).getE();
 	}
 
 	@Override
 	public node_data removeNode(int key) {
 		counter++;
+		Stack <edge_data> s= new Stack <edge_data> ();
+		for (node_data n: gmap.values()) {
+			for (edge_data e: getE(n.getKey())) { // the edge in n
+				if (e.getDest()==key) s.add(e);
+			}
+		}
+		
+		while (!s.isEmpty()) {
+			edge_data e=s.pop();
+			 removeEdge(e.getSrc(),e.getDest());
+		}
+			
 		return gmap.remove(key);
 	}
 

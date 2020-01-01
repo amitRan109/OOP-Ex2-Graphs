@@ -1,23 +1,22 @@
 package algorithms;
 
 import java.util.LinkedList;
+
 import java.util.List;
+
 import java.util.Queue;
-import java.util.Random;
 import java.util.Stack;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
-//import org.omg.Messaging.SyncScopeHelper;
-
 import java.util.Iterator;
 
-//import dataStructure.DGraph;
+import dataStructure.DGraph;
 import dataStructure.DNode;
 import dataStructure.edge_data;
 import dataStructure.graph;
@@ -29,10 +28,19 @@ import dataStructure.node_data;
  *
  */
 public class Graph_Algo implements graph_algorithms,Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	/////delete!!!!
+	public String toString () {
+		return ((DGraph) g).toString();
+	}
+
 	//**params**
-	public graph g;
-
-
+	private graph g; 
+	
 	@Override
 	public void init(graph g) {
 		this.g=g;
@@ -86,34 +94,25 @@ public class Graph_Algo implements graph_algorithms,Serializable{
   		
 	}
 	
-	private void clear() {
-		for (node_data nodes : g.getV()) {
-			nodes.setTag(0);
-			nodes.setWeight(Double.MAX_VALUE);
-		}
-	}
 	@Override
 	public boolean isConnected() {
-		if(g.nodeSize()==1) {
-			return true;
-		}
-		Queue<DNode> q=new ArrayBlockingQueue<DNode>(g.nodeSize());
+		if (g.nodeSize()==1) return true;
+		Queue <DNode> q = new ArrayBlockingQueue<DNode>(g.nodeSize());
 		clear();
-		for (node_data nodes : g.getV()) {
-			nodes.setTag(0);
-
-		}
 		for (node_data node : g.getV() ) {
 			DNode n=(DNode) node;
-			if (n.getE()== null) return false;
+			if (n.getE()== null ) {
+				return false;
+			}
 			q.add(n);
 			n.setTag(1);
 			while (!q.isEmpty()) {
 				for (edge_data edge : q.peek().getE() ) {
 					DNode dest=(DNode) g.getNode(edge.getDest());
-					if(dest.getTag()==0) {
+					if (dest.getTag()==0) {
 						dest.setTag(1);
-						q.add(dest);}
+						q.add(dest);
+					}
 				}
 				q.remove();
 			}
@@ -124,104 +123,95 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 		}
 		return true;
 	}
-	public int getMin() {
-		DNode min=new DNode(-1);
-		int key=0;
-		min.setWeight(Double.MAX_VALUE);
-		for (node_data nodes : g.getV()) {
-			if(nodes.getWeight()<min.getWeight()&& nodes.getTag()==0) {
-				key=nodes.getKey();
-				min=(DNode)nodes;
-			}
-		}
-		return key;
-	}
+
 	@Override
 	public double shortestPathDist(int src, int dest) {
-		clear();
-		DNode src1=(DNode)((g.getNode(src)));
-		src1.setWeight(0);
-		while(g.getNode(getMin())!=null) {
-			DNode min=(DNode)g.getNode(getMin());
-			min.setTag(1);
-			for (edge_data edge: min.getE()) {
-				DNode neighbor= (DNode) g.getNode(edge.getDest()); 
-				if(min.getWeight()+edge.getWeight()<neighbor.getWeight()) {
-					neighbor.setWeight(min.getWeight()+edge.getWeight());
-					neighbor.setMark(min.getKey());
-				}
 
-			}
+
+		if (g.getNode(src) == null || g.getNode(dest) == null) {
+			throw new RuntimeException ("Those nodes are'nt exist");
 		}
+		clear();
+		DNode src1 = (DNode) g.getNode(src);
+		src1.setWeight(0);
+		while (g.getNode(getMin())!=null) {
+			DNode min=(DNode) g.getNode(getMin());
+			min.setTag(1);
+				for (edge_data edge: min.getE()) {
+					DNode neighbor= (DNode) g.getNode(edge.getDest()); 
+					if (min.getWeight()+edge.getWeight()<neighbor.getWeight()) {
+						neighbor.setWeight(min.getWeight()+edge.getWeight());
+						neighbor.setInfo(Integer.toString(min.getKey()));
+					}
+				}
+		}
+		if (g.getNode(dest).getWeight()==Double.MAX_VALUE) return -1;
 		return g.getNode(dest).getWeight();
 	}
-
+	
 	@Override
-	public List<node_data> shortestPath(int src, int dest) {
-		shortestPathDist( src,  dest);
-		DNode temp=(DNode)g.getNode(dest);
-		List<node_data> ans=new LinkedList<node_data>();
-		Stack<node_data> s=new Stack<node_data>();
-		while(temp.getKey()!=src) {
+	public List <node_data> shortestPath(int src, int dest) {
+
+		if (g.getNode(src) == null || g.getNode(dest) == null) {
+			throw new RuntimeException ("Those nodes are'nt exist");
+		}
+		
+		if (shortestPathDist(src,dest)==-1) return null;
+		
+		DNode temp= (DNode) g.getNode(dest);
+		List <node_data> ans=new LinkedList <node_data>();
+		Stack <node_data> s=new Stack <node_data>();
+		while (temp.getKey()!=src) {
 			s.push(temp);
-			temp=(DNode)g.getNode(temp.getMark());
+			temp=(DNode) g.getNode(Integer.parseInt(temp.getInfo()));
 		}
 		s.push(temp);
-		while(!s.isEmpty()) {
-			ans.add(s.pop());			
+		while (!s.isEmpty()) {
+			ans.add(s.pop());
 		}
 		return ans;
-
 	}
-	private boolean moreThenTwoEdge(List<Integer> targets) {
-		Iterator<Integer> it=targets.iterator();
-		int counter=0;
-		while(it.hasNext()) {
-			int target=it.next();
-			if(((DNode)g.getNode(target)).getE().isEmpty()) {
-				counter++;
-			}
-		}
-		if(counter<=1) {
-			return true;
-		}
-		return false;		
-	}
-
-
+	
 	@Override
-	public List<node_data> TSP(List<Integer> targets) {
-		List<node_data> ans=new LinkedList<node_data>();
+	public List<node_data> TSP(List <Integer> targets) {	
+		List <node_data> ans=new LinkedList <node_data>();
+		Iterator <Integer> it=targets.iterator();
 		
-		boolean counter=moreThenTwoEdge( targets);
-		if(counter==true) {	
-			Iterator<Integer> it=targets.iterator();
-			while(it.hasNext()) {
-				int target=it.next();
-				if(((DNode)g.getNode(target)).getE().isEmpty()){
+		int target=it.next();
+		
+		//check if there is at least 1 edge to every node
+		if (TwoNodesNoEdge(targets)){
+			while (it.hasNext()) {
+				if (((DNode)g.getNode(target)).getE().isEmpty()) {
 					it.remove();
 					targets.add(target);
+					//System.out.println("targets: "+targets);
 					break;
-
 				}
+				target=it.next();
 			}
 		}
 		else {
 			System.out.println("There is no way between this nodes");
 			return null;
 		}
-		Iterator<Integer> it2=targets.iterator();
-		ans=shortestPath(it2.next(), it2.next()) ;
-		while(it2.hasNext()) {
-			int pointer=it2.next();
-			if(ans.contains(g.getNode(pointer))) {
+		System.out.println(targets);
+		
+		it=targets.iterator();
+		ans=shortestPath(it.next(),it.next());
+		
+		if (ans == null) return null;
+		
+		while (it.hasNext()) {
+			int pointer=it.next();
+			if (ans.contains(g.getNode(pointer))) {
 				continue;
 			}
 			else {
-				int last=((LinkedList<node_data>)ans).peekLast().getKey();
-				((LinkedList<node_data>)ans).removeLast();
-				ans.addAll(shortestPath(last, pointer) );
-
+				int last=((LinkedList <node_data>) ans).peekLast().getKey();
+				((LinkedList <node_data>) ans).removeLast();
+				if (shortestPath(last,pointer) == null) return null;
+				ans.addAll(shortestPath(last,pointer));
 			}
 		}
 		return ans;
@@ -236,4 +226,38 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 		return newGraph.g;
 	}
 
+	private void clear() {
+		for (node_data nodes : g.getV()) {
+			nodes.setTag(0);
+			nodes.setWeight(Double.MAX_VALUE);
+		}
+	}
+	
+	private int getMin () {
+		DNode min=new DNode (-1);
+		min.setWeight(Double.MAX_VALUE);
+		int minKey=0;
+		for (node_data nodes : g.getV()) {
+			if (nodes.getWeight()<min.getWeight() && nodes.getTag()==0) {
+				min.setWeight(nodes.getWeight());;	
+				minKey=nodes.getKey();
+			}
+		}
+		return minKey;
+	}
+	
+	private boolean TwoNodesNoEdge (List<Integer> targets) {
+		Iterator <Integer> it=targets.iterator();
+		int counter=0;
+		while (it.hasNext()) {
+			int target=it.next();
+			if (((DNode)g.getNode(target)).getE().isEmpty()) {
+				counter++;
+			}
+		}
+		if (counter>1) return false;
+		return true;
+	}
+
+	public graph getG () { return this.g; }
 }
