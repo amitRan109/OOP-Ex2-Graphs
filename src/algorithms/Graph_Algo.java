@@ -3,6 +3,7 @@ package algorithms;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Stack;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.io.FileInputStream;
@@ -191,8 +192,9 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
 		List<node_data> ans=new LinkedList<node_data>();
+		
 		boolean counter=moreThenTwoEdge( targets);
-		if(counter==true) {
+		if(counter==true) {	
 			Iterator<Integer> it=targets.iterator();
 			while(it.hasNext()) {
 				int target=it.next();

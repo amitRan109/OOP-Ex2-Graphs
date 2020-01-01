@@ -242,7 +242,16 @@ public class Graph_GUI extends JFrame implements ActionListener,Serializable {
 
 			break;
 		case "save Graph":
-			System.out.println("show");
+			ga.save("your Graph");	
+			JFrame save=new JFrame(); 
+			JLabel labels = new JLabel();		
+			labels.setText("your file was saved by name:"+"'your Graph'" );
+			labels.setBounds(10, 10, 500,100);
+			save.add(labels);
+			save.setSize(300, 300);
+			save.setLayout(null);
+			save.setVisible(true);
+			
 			break;
 		case "show Graph":
 			showGraph = true;
