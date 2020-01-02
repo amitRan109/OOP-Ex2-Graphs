@@ -21,6 +21,7 @@ import algorithms.Graph_Algo;
 import dataStructure.DGraph;
 import dataStructure.DNode;
 import dataStructure.edge_data;
+import dataStructure.graph;
 import dataStructure.node_data;
 import utils.Point3D;
 
@@ -36,19 +37,18 @@ public class Graph_GUI extends JFrame implements ActionListener, Serializable {
 	//**params**
 	private DGraph gr;
 	private Graph_Algo ga;
-	private boolean showGraph = false;
-
+	
 	//**constructor**
 	public Graph_GUI() {
 		initGUI();
 	}
-
-	//**functions**
-	public void setGraph(DGraph g) {
-		this.gr = g;
+	public Graph_GUI(graph g) {
+		this.gr = (DGraph)g;
 		this.ga = new Graph_Algo();
 		this.ga.init(g);
+		initGUI();
 	}
+	//**functions**
 	
 	public void setGraph_Algo(Graph_Algo ga) {
 		this.ga = new Graph_Algo();
@@ -280,7 +280,6 @@ public class Graph_GUI extends JFrame implements ActionListener, Serializable {
 			break;
 
 		case "show Graph":
-			showGraph = true;
 			repaint();
 			break;
 
@@ -340,8 +339,7 @@ public class Graph_GUI extends JFrame implements ActionListener, Serializable {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		if(!showGraph)
-			return;
+
 		for (node_data n : gr.getV()) {
 			n.setTag(0);
 		}

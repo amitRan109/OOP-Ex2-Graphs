@@ -66,7 +66,7 @@ class algorithmsTest {
 	
 	
 	@Test
-	void Fron_toFile () {
+	void From_toFile () {
 		ga.save("graph_algo");
 		
 		Graph_Algo gaC= new Graph_Algo ();

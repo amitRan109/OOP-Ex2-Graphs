@@ -8,7 +8,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		Graph_GUI window = new Graph_GUI();
+		
 		
 				DGraph gr = new DGraph ();
 		
@@ -33,8 +33,8 @@ public class Main {
 				b.setLocation(new Point3D(150,300));
 				c.setLocation(new Point3D(400,225));
 				d.setLocation(new Point3D(250,450));
-		
-				window.setGraph(gr);
+				
+				Graph_GUI window = new Graph_GUI(gr);
 				window.setVisible(true);
 				
 				

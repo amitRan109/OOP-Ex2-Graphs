@@ -33,14 +33,16 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	/////delete!!!!
-	public String toString () {
-		return ((DGraph) g).toString();
-	}
-
+	
 	//**params**
 	private graph g; 
 	
+	public Graph_Algo(graph g) {
+		this.g=g;
+	}
+	public Graph_Algo() {
+		g=new DGraph();
+	}
 	@Override
 	public void init(graph g) {
 		this.g=g;
@@ -96,6 +98,7 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 	
 	@Override
 	public boolean isConnected() {
+		if(g.nodeSize()==0) return true;
 		if (g.nodeSize()==1) return true;
 		Queue <DNode> q = new ArrayBlockingQueue<DNode>(g.nodeSize());
 		clear();
